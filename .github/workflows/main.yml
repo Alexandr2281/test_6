@@ -9,33 +9,28 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest  
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
     
-    - name: Restore dependencies
-      run: dotnet restore App.test/Test
+    - name: Restore NuGet packages
+      run: nuget restore App.test/Test/Test.csproj -PackagesDirectory App.test/Test/packages
     
     - name: Build
-      run: dotnet build App.test/Test --no-restore --configuration Release
+      run: msbuild App.test/Test/Test.csproj /p:Configuration=Release
     
     - name: Test
-      run: dotnet test App.test/Test --no-build --configuration Release --verbosity normal
+      run: dotnet test App.test/Test/Test.csproj --no-build --configuration Release --verbosity normal
     
     - name: Test Report
       if: always()
       run: |
         echo "## Тестирование завершено" >> $env:GITHUB_STEP_SUMMARY
         echo "Статус: ${{ job.status }}" >> $env:GITHUB_STEP_SUMMARY
-        echo "Время: $(Get-Date)" >> $env:GITHUB_STEP_SUMMARY
