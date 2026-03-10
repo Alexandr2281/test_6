@@ -19,27 +19,18 @@ jobs:
       with:
         dotnet-version: 6.0.x
     
-    - name: Restore dependencies for test project
+    - name: Restore dependencies
       run: dotnet restore App.test/Test
     
-    - name: Build test project
+    - name: Build
       run: dotnet build App.test/Test --no-restore --configuration Release
     
-    - name: Run tests
+    - name: Test
       run: dotnet test App.test/Test --no-build --configuration Release --verbosity normal
     
     - name: Test Report
       if: always()
       run: |
-        echo "## Результаты тестирования" >> $GITHUB_STEP_SUMMARY
-        echo "### Проект: App.test/Test" >> $GITHUB_STEP_SUMMARY
-        echo "**Статус:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Время выполнения:** $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "**Коммит:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-        
-        # Получаем информацию о тестах из результата
-        if [[ "${{ job.status }}" == "success" ]]; then
-          echo "✅ **Все тесты пройдены успешно**" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ **Обнаружены ошибки в тестах**" >> $GITHUB_STEP_SUMMARY
-        fi
+        echo "## Тестирование завершено" >> $GITHUB_STEP_SUMMARY
+        echo "Статус: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "Время: $(date)" >> $GITHUB_STEP_SUMMARY
