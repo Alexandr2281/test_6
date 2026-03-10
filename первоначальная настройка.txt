@@ -1,0 +1,28 @@
+первоначальная настройка
+git config --global user.name "Александр2281"
+git config --global user.email bebenkovalexander@yandex.ru
+
+выбор пректа
+cd "путь"
+git init --initial-branch=main
+
+переименование ветки
+git branch -m main
+
+подключение git hab
+git remote add rep url
+
+создание ветки
+git checkout -b develop
+
+слияние веток
+git config pull.rebase true
+
+git pull rep main
+
+выгрузка 
+
+git push rep main
+
+переключение между веток
+git checkout имя_ветки
